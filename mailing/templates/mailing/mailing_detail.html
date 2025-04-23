@@ -1,0 +1,46 @@
+{% extends 'mailing/base.html' %}
+{% block title %} Рассылка {% endblock %}
+{% block content %}
+<div class='album py-5 bg-body-tertiary'>
+    <div class='container'>
+        <div class='row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3'>
+            <div class='col'>
+                <div class='card shadow-sm'>
+                    <div class='card-body'>
+                        <p class='card-text'>{{object.message.theme}}</p>
+                        <p class='card-text'>{{object.message.body}}</p>
+                        <p class='card-text'>{{status}}</p>
+                        <p>{% if start %} Дата и время начала рассылки:
+                            {{ mailing.start|date:'d.m.y H:i' }} {% endif %}
+                        </p>
+                        <p>{% if end %} Дата и время окончания рассылки:
+                            {{ mailing.end|date:'d.m.y H:i' }} {% endif %}
+                        </p>
+                        {% if user == object.owner and object.status != 'completed' %}
+                        <div class='d-flex justify-content-between align-items-center'>
+                            <div class='btn-group'>
+                                <a class='btn btn-outline-primary btn-sm'
+                                   href='{% url "mailing:mailing_update" object.pk %}' role='button'> Редактировать
+                                </a>
+                                <a class='btn btn-outline-primary btn-sm'
+                                   href='{% url "mailing:mailing_confirm_delete" object.pk %}' role='button'> Удалить
+                                </a>
+                                {% if object.status != 'completed' %}
+                                <a class='btn btn-outline-primary btn-sm'
+                                   href='{% url "mailing:send" object.pk %}' role='button'>Запустить рассылку
+                                </a>
+                                {% endif %}
+                            </div>
+                            <a class='btn btn-outline-primary btn-sm' href='{% url "mailing:main" %}'
+                               role='button'> На главную
+                            </a>
+
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

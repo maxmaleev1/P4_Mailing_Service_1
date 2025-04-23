@@ -1,0 +1,40 @@
+{% extends 'mailing/base.html' %}
+{% block title %} Рассылки {% endblock %}
+{% block content %}
+<div class='list-unstyled ps-0'>
+    <div class='container'>
+        <h2>Рассылки</h2>
+        <div class='d-flex justify-content-end'>
+           <a type='button' class='btn btn-outline-primary' href='{% url "mailing:mailing_create" %}'>Новая рассылка</a>
+        </div>
+        <div class='row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3'>
+            {% for mailing in object_list %}
+            <div class='card-body'>
+                <p class='card-text'>{{ mailing.message.theme }}</p>
+                <p class='card-text'>{{ mailing.message.body }}</p>
+                {% for recipient in mailing.recipients.all %}
+                <div class='card-body'>
+                    <li>{{ recipient }}</li>
+                </div>
+                {% endfor %}
+                <p class='card-text'>{{ mailing.status }}</p>
+                {% if perms.mailing.can_stop_mailing %}
+                <a type='button' class='btn btn-outline-primary btn-sm'
+                   href='{% url "mailing:stop_mailing" pk=mailing.pk %}'>Остановить рассылку
+                </a>
+                {% endif %}
+                {% if user == mailing.owner %}
+                <a class='btn btn-primary btn-sm' href='{% url "mailing:mailing_detail" mailing.pk %}'>Подробнее</a>
+                <a class='btn btn-primary btn-sm' href='{% url "mailing:mailing_update" mailing.pk %}'
+                   role='button'>Редактировать
+                </a>
+                <a class='btn btn-danger btn-sm' href='{% url "mailing:mailing_confirm_delete" mailing.pk %}'
+                   role='button'>Удалить
+                </a>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
