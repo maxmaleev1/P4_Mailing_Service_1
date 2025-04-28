@@ -1,0 +1,25 @@
+{% extends 'mailing/base.html' %}
+{%block title%}Главная{% endblock %}
+{%block content%}
+<div class='pricing-header px-2 pb-md-4 text-center'>
+    {% if user.is_authenticated %}
+    <h3> Добро пожаловать, {{ user.email }}! </h3>
+    {% else %}
+    <h3>Добро пожаловать на наш сервис рассылок!</h3>
+    <h5>Для работы с сервисом необходимо войти</h5>
+        <li><a href='{% url "users:login" %}' class='text-white'>Вход</a></li>
+        <li><a href='{% url "users:register" %}' class='text-white'>Регистрация</a></li>
+    {% endif %}
+</div>
+{% if user.is_authenticated %}
+<div class='container'>
+      <div class='row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3'>
+          <div class='statistics'>
+              <p>Количество всех рассылок: {{ mailings }}</p>
+              <p>Количество активных рассылок: {{ launched_mailing }}</p>
+              <p>Количество уникальных получателей: {{ recipients }}</p>
+          </div>
+      </div>
+</div>
+{% endif %}
+{% endblock %}

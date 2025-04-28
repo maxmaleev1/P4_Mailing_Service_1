@@ -1,0 +1,55 @@
+<div class='collapse text-bg-dark' id='navbarHeader'>
+<div class='container'>
+  <div class='row'>
+    <div class='col-sm-8 col-md-7 py-4'>
+      <h4>Сервис рассылок</h4>
+      <ul class='list-unstyled'>
+        {% if user.is_authenticated %}
+        <li class='nav-item'>
+                <a class='nav-link' href='/recipient/list/'>Получатели</a>
+            </li>
+            <li class='nav-item'>
+                <a class='nav-link' href='/message/list/'>Сообщения</a>
+            </li>
+            <li class='nav-item'>
+                <a class='nav-link' href='/mailing/list/'>Рассылки</a>
+            </li>
+            <li class='nav-item'>
+                <a class='nav-link' href='/mailing/statistics/'>Статистика</a>
+            </li>
+        {% endif %}
+      </ul>
+    </div>
+    <div class='col-sm-4 offset-md-1 py-4'>
+      <h4>Навигация</h4>
+      <ul class='list-unstyled'>
+        <li><a href='{% url "mailing:main" %}' class='text-white'>Главная</a></li>
+        {% if user.is_authenticated %}
+        <li><a href='{% url "users:profile" %}' class='text-white'>Профиль</a></li>
+        <li><a href='{% url "users:user_update" user.pk %}' class='text-white'>Редактировать профиль</a></li>
+          {% if "users.can_view_user" in perms %}
+          <li><a href='{% url "users:user_list" %}' class='text-white'>Список пользователей</a></li>
+          {% endif %}
+        <li>
+            <form method='post' action='{% url "users:logout" %}' style='display:inline'>
+                {% csrf_token %}
+                <button type='submit' class='btn btn-link nav-link'>Выйти</button>
+            </form>
+        </li>
+        {% else %}
+        <li><a href='{% url "users:login" %}' class='text-white'>Вход</a></li>
+        <li><a href='{% url "users:register" %}' class='text-white'>Регистрация</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</div>
+</div>
+<div class='navbar navbar-dark bg-dark shadow-sm'>
+<div class='container'>
+  <button class='navbar-toggler' type='button' data-bs-toggle='collapse' data-bs-target='#navbarHeader'
+          aria-controls='navbarHeader' aria-expanded='false' aria-label='Toggle navigation'>
+    <span class='navbar-toggler-icon'></span>
+  </button>
+</div>
+</div>

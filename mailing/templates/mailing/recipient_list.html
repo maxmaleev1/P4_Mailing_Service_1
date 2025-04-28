@@ -1,0 +1,35 @@
+{% extends 'mailing/base.html' %}
+{% block title %} Получатели рассылки {% endblock %}
+{% block content %}
+<div class='container'>
+    <h2>Список получателей рассылки</h2>
+    <div class='d-flex justify-content-end mb-3'>
+        <a class='btn btn-outline-primary' href='{% url "mailing:recipient_create" %}'>Новый получатель</a>
+    </div>
+    <div class='row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3'>
+        {% for recipient in object_list %}
+        {% if perms.mailing.can_view_recipient or user == recipient.owner %}
+        <div class='col'>
+            <div class='card h-100'>
+                <div class='card-body'>
+                    <p class='card-text'><strong>{{ recipient.name }}</strong></p>
+                    <p class='card-text'>{{ recipient.email }}</p>
+                    <p class='card-text'>{{ recipient.comment }}</p>
+                </div>
+                <div class='card-footer d-flex justify-content-between'>
+                    <a class='btn btn-primary btn-sm'
+                       href='{% url "mailing:recipient_detail" recipient.pk %}'>Посмотреть</a>
+                    {% if user == recipient.owner %}
+                    <div class='btn-group'>
+                        <a class='btn btn-primary btn-sm' href='{% url "mailing:recipient_update" recipient.pk %}'>Редактировать</a>
+                        <a class='btn btn-danger btn-sm' href='{% url "mailing:recipient_confirm_delete" recipient.pk %}'>Удалить</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

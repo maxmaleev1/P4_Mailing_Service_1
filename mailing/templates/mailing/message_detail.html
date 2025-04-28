@@ -1,0 +1,29 @@
+{% extends 'mailing/base.html' %}
+{% block title %} Сообщение {% endblock %}
+{% block content %}
+<div class='album py-5 bg-body-tertiary'>
+    <div class='container'>
+      <div class='row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3'>
+        <div class='col'>
+          <div class='card shadow-sm'>
+            <div class='card-body'>
+              <p class='card-text'>{{object.theme}}</p>
+              <p class='card-text'>{{object.body}}</p>
+              <div class='d-flex justify-content-between align-items-center'>
+                <div class='btn-group'>
+                  <a class='btn btn-outline-primary' href='{% url "mailing:message_list" %}' role='button'>Назад</a>
+                   {% if user == message.owner %}
+                    <div class='btn-group'>
+                        <a class='btn btn-primary btn-sm' href='{% url "mailing:message_update" message.pk %}'>Редактировать</a>
+                        <a class='btn btn-danger btn-sm' href='{% url "mailing:message_confirm_delete" message.pk %}'>Удалить</a>
+                    </div>
+                    {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+{% endblock %}
